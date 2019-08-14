@@ -1,0 +1,14 @@
+C:\Users\ysant\source\repos\DemoApi\DemoApi\bin\Release\netcoreapp2.2\DemoApi.deps.json
+C:\Users\ysant\source\repos\DemoApi\DemoApi\bin\Release\netcoreapp2.2\DemoApi.runtimeconfig.json
+C:\Users\ysant\source\repos\DemoApi\DemoApi\bin\Release\netcoreapp2.2\DemoApi.runtimeconfig.dev.json
+C:\Users\ysant\source\repos\DemoApi\DemoApi\bin\Release\netcoreapp2.2\DemoApi.dll
+C:\Users\ysant\source\repos\DemoApi\DemoApi\bin\Release\netcoreapp2.2\DemoApi.pdb
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.csprojResolveAssemblyReference.cache
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.csproj.CoreCompileInputs.cache
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.RazorAssemblyInfo.cache
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.RazorAssemblyInfo.cs
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.AssemblyInfoInputs.cache
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.AssemblyInfo.cs
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.RazorTargetAssemblyInfo.cache
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.dll
+C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Release\netcoreapp2.2\DemoApi.pdb
