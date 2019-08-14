@@ -13,6 +13,10 @@ pipeline {
 					defaultValue: "DemoApi.Tests/DemoApi.Tests.csproj", 
 					description: '')
 
+			string(	name: 'DEPLOY_PROJECT_PATH',
+					defaultValue: "FirstWebApp/Publish/FirstWebApp.dll", 
+					description: '')
+
 		    
     }
 	
@@ -29,5 +33,13 @@ pipeline {
                 sh 'dotnet test ${TEST_PROJECT_PATH}' 
             }
         }
+
+		stage('Deploy') {
+            steps {
+                sh 'dotnet publish ${SOLUTION_FILE_PATH} -o Publish' 
+                sh 'dotnet ${DEPLOY_PROJECT_PATH}'
+            }
+        }
+
     }
 }
