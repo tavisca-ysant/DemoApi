@@ -14,7 +14,7 @@ pipeline {
 					description: '')
 
 			string(	name: 'DEPLOY_PROJECT_PATH',
-					defaultValue: "FirstWebApp/Publish/FirstWebApp.dll", 
+					defaultValue: "DemoApi/Publish/DemoApi.dll", 
 					description: '')
 
 		    
