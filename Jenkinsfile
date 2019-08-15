@@ -28,18 +28,31 @@ pipeline {
 				
             }
         }
+		post{
+		  success{
+		     sh 'deleteDir()'
+		  }
+		}
         stage('Test') {
             steps {
                 sh 'dotnet test ${TEST_PROJECT_PATH}' 
             }
         }
-
+		post{
+		  success{
+		     sh 'deleteDir()'
+		  }
+		}
 		stage('Deploy') {
             steps {
                 sh 'dotnet publish ${SOLUTION_FILE_PATH} -o Publish' 
                 sh 'dotnet ${DEPLOY_PROJECT_PATH}'
             }
         }
-
+		post{
+		  success{
+		     sh 'deleteDir()'
+		  }
+		}
     }
 }
