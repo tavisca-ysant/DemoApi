@@ -34,7 +34,7 @@ pipeline {
 		stage('Deploy'){
 			script{
 
-			  if(sh '''docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER} '''.toBoolean()){
+			  if(sh '''docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER} ''' == true){
 			     sh 'docker container rm -f ${DOCKER_CONTAINER}'
 			  }
 
