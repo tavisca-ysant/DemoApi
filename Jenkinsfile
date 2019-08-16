@@ -18,17 +18,29 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-				sh 'dotnet restore ${SOLUTION_FILE_PATH} --source https://api.nuget.org/v3/index.json'
-                sh 'dotnet build  ${SOLUTION_FILE_PATH} -p:Configuration=release -v:n'
+				sh 'dotnet restore'
+                sh 'dotnet build -p:Configuration=release -v:n'
 				
             }
         }
 		
         stage('Test') {
             steps {
-                sh 'dotnet test ${TEST_PROJECT_PATH}' 
+                sh 'dotnet test' 
             }
         }
-		
+		stage('Publish') {
+            steps {
+                sh 'dotnet publish -c Release -o Publish' 
+            }
+        }
+		stage('Deploy'){
+		     steps{
+			    sh 'docker build -t DemoApi -f Dockerfile .'
+				sh 'docker run --rm -p 65208:65208/tcp DemoApi:latest'
+
+			 }
+
+		}
     }
 }
