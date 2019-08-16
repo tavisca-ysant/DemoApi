@@ -37,6 +37,9 @@ pipeline {
 		stage('Deploy'){
 		     steps{
 			    sh 'docker build -t demoapi -f Dockerfile .'
+				sh 'docker tag demoapi yatharthsant/jenkinsrepo:image1'
+				sh 'docker push yatharthsant/jenkinsrepo:image1'
+				sh 'docker image rm -f yatharthsant/jenkinsrepo:image1'
 				sh 'docker run --rm -p 65208:65208/tcp demoapi:latest'
 			 }
 		}
