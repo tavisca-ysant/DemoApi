@@ -34,7 +34,7 @@ pipeline {
 		stage('Deploy'){
 		     steps{
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
-				sh 'docker run --name ${DOCKER_CONTAINER} -p 65208:65208/tcp ${DOCKER_FILE}:latest'
+				sh 'docker run --name ${DOCKER_CONTAINER} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
 				sh 'docker image rm -f ${DOCKER_FILE}:latest'
 			 }
 		}
@@ -42,7 +42,7 @@ pipeline {
     }
 	post{
 	  always{ 
-	    sh 'docker container stop ${DOCKER_CONTAINER}'
+	    sh 'docker container rm -f demoapi-container'
 	  }
 	}
 }
