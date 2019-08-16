@@ -17,6 +17,7 @@ pipeline {
 			       defaultValue: 'yatharthsant')
 			string(name: 'PASSWORD',
 			       defaultValue: 'Yatharth123@')
+			string(name: 'docker-hub-credentials', defaultValue: 'localhost:8080')
 		    
     }
 	
