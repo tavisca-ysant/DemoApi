@@ -51,7 +51,7 @@ pipeline {
 			    '''
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
-				sh 'docket tag ${DOCKER_FILE} ${USERNAME}/test-repo:latest'
+				sh 'docker tag ${DOCKER_FILE} ${USERNAME}/test-repo:latest'
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
 				sh 'docker push ${USERNAME}/test-repo:latest'
 				sh 'docker image rm -f ${DOCKER_FILE}:latest'
