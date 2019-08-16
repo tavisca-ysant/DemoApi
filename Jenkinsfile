@@ -41,7 +41,7 @@ pipeline {
 		
     }
 	post{
-	  success{ 
+	  always{ 
 	    sh 'docker container stop ${DOCKER_CONTAINER}'
 	  }
 	}
