@@ -32,6 +32,13 @@ pipeline {
             }
         }
 		stage('Deploy'){
+			script{
+
+			  if(sh '''docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER} '''.toBoolean()){
+			     sh 'docker container rm -f ${DOCKER_CONTAINER}'
+			  }
+
+			}
 		     steps{
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
@@ -40,9 +47,4 @@ pipeline {
 		}
 		
     }
-	post{
-	  always{ 
-	    sh 'docker container rm -f demoapi-container'
-	  }
-	}
 }
