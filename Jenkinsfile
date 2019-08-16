@@ -32,13 +32,14 @@ pipeline {
             }
         }
 		stage('Deploy'){
-			
+			script{
 			 sh '''
 			    if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER} == true){
 				    docker container rm -f ${DOCKER_CONTAINER}
 				}
 
 			 '''
+			}
 		     steps{
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
