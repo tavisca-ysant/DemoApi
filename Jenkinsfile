@@ -5,13 +5,8 @@ pipeline {
 					defaultValue: "https://github.com/tavisca-ysant/DemoApi.git",
 					description: '')
 
-			string(	name: 'SOLUTION_FILE_PATH',
-					defaultValue: "DemoApi.sln", 
-					description: '')
-
-			string(	name: 'TEST_PROJECT_PATH',
-					defaultValue: "DemoApi.Tests/DemoApi.Tests.csproj", 
-					description: '')
+			string(name: 'DOCKER_FILE',
+			       defaultValue: 'demoapi')
 		    
     }
 	
@@ -36,11 +31,9 @@ pipeline {
         }
 		stage('Deploy'){
 		     steps{
-			    sh 'docker build -t demoapi -f Dockerfile .'
-				sh 'docker tag demoapi yatharthsant/jenkinsrepo:image1'
-				sh 'docker push yatharthsant/jenkinsrepo:image1'
-				sh 'docker image rm -f yatharthsant/jenkinsrepo:image1'
-				sh 'docker run --rm -p 65208:65208/tcp demoapi:latest'
+			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
+				sh 'docker run --rm -p 65208:65208/tcp ${DOCKER_FILE}:latest'
+				sh 'docker image rm -f ${DOCKER_FILE}'
 			 }
 		}
     }
