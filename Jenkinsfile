@@ -16,6 +16,10 @@ pipeline {
 			       defaultValue: 'Yatharth123@')
 			string(name: 'DOCKER_REPOSITORY',
 			       defaultValue: 'test-repo')
+			string(name: 'APPLICATION_PORT',
+			       defaultValue: '65208')
+		    string(name: 'DOCKER_CONTAINER_PORT',
+			       defaultValue: '65208')
 		    
     }
 	
