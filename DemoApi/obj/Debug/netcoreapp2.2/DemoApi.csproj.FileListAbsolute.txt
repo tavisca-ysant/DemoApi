@@ -12,3 +12,17 @@ C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.Asse
 C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.RazorTargetAssemblyInfo.cache
 C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.dll
 C:\Users\ysant\source\repos\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.pdb
+C:\Users\ysant\source\work\DemoApi\DemoApi\bin\Debug\netcoreapp2.2\DemoApi.deps.json
+C:\Users\ysant\source\work\DemoApi\DemoApi\bin\Debug\netcoreapp2.2\DemoApi.runtimeconfig.json
+C:\Users\ysant\source\work\DemoApi\DemoApi\bin\Debug\netcoreapp2.2\DemoApi.runtimeconfig.dev.json
+C:\Users\ysant\source\work\DemoApi\DemoApi\bin\Debug\netcoreapp2.2\DemoApi.dll
+C:\Users\ysant\source\work\DemoApi\DemoApi\bin\Debug\netcoreapp2.2\DemoApi.pdb
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.csproj.CoreCompileInputs.cache
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.RazorAssemblyInfo.cache
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.RazorAssemblyInfo.cs
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.AssemblyInfoInputs.cache
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.AssemblyInfo.cs
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.RazorTargetAssemblyInfo.cache
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.dll
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.pdb
+C:\Users\ysant\source\work\DemoApi\DemoApi\obj\Debug\netcoreapp2.2\DemoApi.csprojResolveAssemblyReference.cache

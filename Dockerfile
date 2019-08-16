@@ -6,8 +6,10 @@ COPY *.sln ./
 COPY DemoApi/DemoApi.csproj ./DemoApi/
 COPY DemoApi.Tests/DemoApi.Tests.csproj ./DemoApi.Tests/
 RUN dotnet restore
+#RUN dotnet build -c Release --no-restore
 
-
+#WORKDIR /app/DemoApi.Tests
+#RUN dotnet test DemoApi.Tests.csproj
 
 # Copy everything else and build
 COPY . ./

@@ -9569,11 +9569,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\ysant\\source\\repos\\DemoApi\\DemoApi.Tests\\DemoApi.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\ysant\\source\\work\\DemoApi\\DemoApi.Tests\\DemoApi.Tests.csproj",
       "projectName": "DemoApi.Tests",
-      "projectPath": "C:\\Users\\ysant\\source\\repos\\DemoApi\\DemoApi.Tests\\DemoApi.Tests.csproj",
+      "projectPath": "C:\\Users\\ysant\\source\\work\\DemoApi\\DemoApi.Tests\\DemoApi.Tests.csproj",
       "packagesPath": "C:\\Users\\ysant\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ysant\\source\\repos\\DemoApi\\DemoApi.Tests\\obj\\",
+      "outputPath": "C:\\Users\\ysant\\source\\work\\DemoApi\\DemoApi.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -9592,8 +9592,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "C:\\Users\\ysant\\source\\repos\\DemoApi\\DemoApi\\DemoApi.csproj": {
-              "projectPath": "C:\\Users\\ysant\\source\\repos\\DemoApi\\DemoApi\\DemoApi.csproj"
+            "C:\\Users\\ysant\\source\\work\\DemoApi\\DemoApi\\DemoApi.csproj": {
+              "projectPath": "C:\\Users\\ysant\\source\\work\\DemoApi\\DemoApi\\DemoApi.csproj"
             }
           }
         }
