@@ -35,8 +35,8 @@ pipeline {
 			
 		     steps{
 			 sh '''
-			    if[docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER} -eq true]
-				then 
+				if(docker inspect -f {{.State.Running}} opt-container)
+				then
 					docker container rm -f ${DOCKER_CONTAINER}
 				fi
 			 '''
