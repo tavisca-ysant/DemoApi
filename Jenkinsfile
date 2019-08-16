@@ -34,12 +34,6 @@ pipeline {
 		stage('Deploy'){
 			
 		     steps{
-			 sh '''
-				if(docker inspect -f {{.State.Running}} ${DOCKER_CONTAINER})
-				then
-					docker container rm -f ${DOCKER_CONTAINER}
-				fi
-			 '''
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
 				sh 'docker image rm -f ${DOCKER_FILE}:latest'
