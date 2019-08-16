@@ -36,11 +36,9 @@ pipeline {
         }
 		stage('Deploy'){
 		     steps{
-			    sh 'docker build -t DemoApi -f Dockerfile .'
-				sh 'docker run --rm -p 65208:65208/tcp DemoApi:latest'
-
+			    sh 'docker build -t demoapi -f Dockerfile .'
+				sh 'docker run --rm -p 65208:65208/tcp demoapi:latest'
 			 }
-
 		}
     }
 }
