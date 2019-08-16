@@ -12,11 +12,6 @@ pipeline {
 			string(	name: 'TEST_PROJECT_PATH',
 					defaultValue: "DemoApi.Tests/DemoApi.Tests.csproj", 
 					description: '')
-
-			string(	name: 'DEPLOY_PROJECT_PATH',
-					defaultValue: "DemoApi/Publish/DemoApi.dll", 
-					description: '')
-
 		    
     }
 	
