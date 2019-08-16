@@ -9,6 +9,10 @@ pipeline {
 			       defaultValue: 'demoapi')
 		    string(name: 'DOCKER_CONTAINER_NAME',
 			       defaultValue: 'demoapi-container')
+			string(name: 'USERNAME',
+			       defaultValue: 'yatharthsant')
+			string(name: 'PASSWORD',
+			       defaultValue: 'Yatharth123@')
 		    
     }
 	
@@ -42,6 +46,15 @@ pipeline {
 			    '''
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
+				withCredentials([usernamePassword( credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+				    usr  = ${USERNAME}
+					pass = ${PASSWORD}
+				}
+				docker.withRegistry('', 'docker-hub-credentials') {
+				sh "docker login -u ${usr} -p ${pass}"
+				${DOCKER_FILE}.push("${env.BUILD_NUMBER}")
+				${DOCKER_FILE}.push("latest")
+				}
 				sh 'docker image rm -f ${DOCKER_FILE}:latest'
 			 }
 		}
