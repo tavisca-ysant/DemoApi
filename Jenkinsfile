@@ -7,7 +7,7 @@ pipeline {
 
 			string(name: 'DOCKER_FILE',
 			       defaultValue: 'demoapi')
-		    string(name: 'DOCKER_CONTAINER',
+		    string(name: 'DOCKER_CONTAINER_NAME',
 			       defaultValue: 'demoapi-container')
 		    
     }
@@ -34,8 +34,14 @@ pipeline {
 		stage('Deploy'){
 			
 		     steps{
+			    sh '''
+				if(docker inspect -f {{.State.Running}} ${DOCKER_CONTAINER_NAME})
+				then
+					docker container rm -f ${DOCKER_CONTAINER_NAME}
+				fi
+			    '''
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
-				sh 'docker run  -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
 				sh 'docker image rm -f ${DOCKER_FILE}:latest'
 			 }
 		}
