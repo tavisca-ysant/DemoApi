@@ -31,7 +31,7 @@ pipeline {
         }
 		stage('Publish') {
             steps {
-                sh 'dotnet publish -c Release -o Publish' 
+                sh 'dotnet publish -c Release -o publish' 
             }
         }
 		stage('Deploy'){
