@@ -1,5 +1,9 @@
 pipeline {
     agent any
+	environment {
+    registry = "yatharthsant/test-repo"
+    registryCredential = 'dockerhub'
+  }
 	parameters {		
 			string(	name: 'GIT_SSH_PATH',
 					defaultValue: "https://github.com/tavisca-ysant/DemoApi.git",
@@ -46,14 +50,14 @@ pipeline {
 			    '''
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p 65208:65208/tcp ${DOCKER_FILE}:latest'
-				withCredentials([usernamePassword( credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-				    usr  = ${USERNAME}
-					pass = ${PASSWORD}
-				}
+				script{
+				withCredentials([usernamePassword( credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'USERNAME')])
+				    
 				docker.withRegistry('', 'docker-hub-credentials') {
-				sh "docker login -u ${usr} -p ${pass}"
+				sh "docker login -u ${USERNAME} -p ${USERNAME}"
 				${DOCKER_FILE}.push("${env.BUILD_NUMBER}")
 				${DOCKER_FILE}.push("latest")
+				}
 				}
 				sh 'docker image rm -f ${DOCKER_FILE}:latest'
 			 }
