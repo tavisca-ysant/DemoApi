@@ -1,5 +1,5 @@
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:latest AS runtime
-WORKDIR app
+WORKDIR /app
 COPY ./DemoApi/publish ./
-ENTRYPOINT ["dotnet", "*.dll"]
+ENTRYPOINT ["dotnet", "DemoApi.dll"]
