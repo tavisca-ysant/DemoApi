@@ -1,4 +1,6 @@
 pipeline {
+    agent any
+	
 	parameters {		
 			string(	name: 'GIT_SSH_PATH',
 					defaultValue: "https://github.com/tavisca-ysant/DemoApi.git",
@@ -22,13 +24,7 @@ pipeline {
 			       defaultValue: 'DemoApi')
 		    
     }
-	agent{
-	  any
-	  dockerfile{
-	     filename 'Dockerfile'
-	     additionalBuildArgs '--build-arg APPLICATION_NAME="' + ${APP_NAME} + '"'
-	  }
-	}
+	
     stages {
         stage('Build') {
             steps {
@@ -49,7 +45,12 @@ pipeline {
             }
         }
 		stage('Deploy'){
-			
+			agent{
+			  dockerfile{
+			     filename 'Dockerfile'
+	             additionalBuildArgs '--build-arg APPLICATION_NAME="\' + ${APP_NAME} + \'"'
+			  }
+			}
 		     steps{
 			    sh '''
 				if(docker inspect -f {{.State.Running}} ${DOCKER_CONTAINER_NAME})
