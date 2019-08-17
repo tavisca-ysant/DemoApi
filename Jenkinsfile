@@ -45,12 +45,6 @@ pipeline {
             }
         }
 		stage('Deploy'){
-			agent{
-			  dockerfile{
-			     filename 'Dockerfile'
-	             additionalBuildArgs '--build-arg APPLICATION_NAME="' + ${params.APP_NAME} + '"'
-			  }
-			}
 		     steps{
 			    sh '''
 				if(docker inspect -f {{.State.Running}} ${DOCKER_CONTAINER_NAME})
@@ -58,7 +52,7 @@ pipeline {
 					docker container rm -f ${DOCKER_CONTAINER_NAME}
 				fi
 			    '''
-			    sh 'docker build  -t ${DOCKER_FILE} -f Dockerfile .'
+			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT}/tcp ${DOCKER_FILE}:latest'
 				sh 'docker tag ${DOCKER_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
