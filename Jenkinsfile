@@ -45,6 +45,10 @@ pipeline {
             }
         }
 		stage('Deploy'){
+		 agent {
+                docker {
+                    args "--link ${params.APP_NAME}" }
+            }
 		     steps{
 			    sh '''
 				if(docker inspect -f {{.State.Running}} ${DOCKER_CONTAINER_NAME})
