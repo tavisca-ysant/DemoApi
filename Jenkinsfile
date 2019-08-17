@@ -20,6 +20,8 @@ pipeline {
 			       defaultValue: '65208')
 		    string(name: 'DOCKER_CONTAINER_PORT',
 			       defaultValue: '65208')
+			string(name: 'APP_NAME',
+			       defaultValue: 'DemoApi')
 		    
     }
 	
@@ -51,7 +53,7 @@ pipeline {
 					docker container rm -f ${DOCKER_CONTAINER_NAME}
 				fi
 			    '''
-			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
+			    sh 'docker build --build-arg APPLICATION = ${APP_NAME} -t ${DOCKER_FILE} -f Dockerfile .'
 				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT}/tcp ${DOCKER_FILE}:latest'
 				sh 'docker tag ${DOCKER_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
