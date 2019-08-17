@@ -25,7 +25,8 @@ pipeline {
 		    
     }
 	agent{
-	  docker{
+	  dockerfile{
+	     filename 'Dockerfile'
 	     additionalBuildArgs '--build-arg APPLICATION_NAME="' + ${APP_NAME} + '"'
 	  }
 	}
