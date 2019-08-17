@@ -41,7 +41,7 @@ pipeline {
         }
 		stage('Publish') {
             steps {
-                sh 'dotnet publish ${APP_NAME}.sln -c RELEASE -o publish' 
+                sh 'dotnet publish -c Release -o publish' 
             }
         }
 		stage('Deploy'){
