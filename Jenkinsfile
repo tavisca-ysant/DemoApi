@@ -13,7 +13,7 @@ pipeline {
 			string(name: 'USERNAME',
 			       defaultValue: 'yatharthsant')
 			string(name: 'PASSWORD',
-			       defaultValue: 'Yatharth123@')
+			       defaultValue: '************')
 			string(name: 'DOCKER_REPOSITORY',
 			       defaultValue: 'test-repo')
 			string(name: 'APPLICATION_PORT',
