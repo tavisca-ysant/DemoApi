@@ -54,7 +54,7 @@ pipeline {
 				fi
 			    '''
 			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
-				sh 'docker run --name ${DOCKER_CONTAINER_NAME}  -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT}/tcp ${DOCKER_FILE}:latest'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT}/tcp ${DOCKER_FILE}:latest'
 				sh 'docker tag ${DOCKER_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
 				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
 				sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:latest'
