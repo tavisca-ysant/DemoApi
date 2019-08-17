@@ -1,6 +1,4 @@
 pipeline {
-    agent any
-	
 	parameters {		
 			string(	name: 'GIT_SSH_PATH',
 					defaultValue: "https://github.com/tavisca-ysant/DemoApi.git",
@@ -25,6 +23,7 @@ pipeline {
 		    
     }
 	agent{
+	  label 'master'
 	  dockerfile{
 	     filename 'Dockerfile'
 	     additionalBuildArgs '--build-arg APPLICATION_NAME="' + ${APP_NAME} + '"'
