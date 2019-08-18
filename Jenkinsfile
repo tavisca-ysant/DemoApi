@@ -50,11 +50,7 @@ pipeline {
             }
         }
 
-		stage('Setting up environment for docker'){
-		  steps{
-		     sh 'mv Dockerfile ${APP_NAME}/${OutputDirectory}'
-		  }
-		}
+		
 		
 		stage('Deploy'){
 		     
