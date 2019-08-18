@@ -49,9 +49,6 @@ pipeline {
                 sh 'dotnet publish ${APP_NAME} -c Release -o publish' 
             }
         }
-
-		
-		
 		stage('Deploy'){
 		     
 		     steps{
