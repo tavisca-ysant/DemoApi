@@ -72,7 +72,8 @@ pipeline {
 				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:latest'
 				  }
 				}
-				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
+				sh 'docker pull ${USERNAME}/${DOCKER_REPOSITORY}:latest'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} latest'
 			 }
 		}
 		
