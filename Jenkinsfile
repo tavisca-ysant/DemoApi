@@ -2,6 +2,9 @@ pipeline {
     agent any
 	
 	parameters {		
+			choice(
+                    choices: ['RUN_APPLICATION','PUBLISH_TO_DOCKER_HUB','RUN_AND_PUBLISH_TO_DOCKER_HUB'],
+                    name: 'CHOSEN_ACTION')
 			string(	name: 'GIT_SSH_PATH',
 					defaultValue: "https://github.com/tavisca-ysant/DemoApi.git",
 					description: '')
@@ -45,19 +48,7 @@ pipeline {
 				
             }
         }
-	 stage('Sonarqube') {
-    environment {
-        scannerHome = tool 'SonarQube Scanner 4.0.0.1744'
-    }
-    steps {
-        withSonarQubeEnv('SonarQube Scanner 4.0.0.1744') {
-            sh '${scannerHome}/bin/sonar-scanner'
-        }
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-    }
-}
+	 
         stage('Test') {
             steps {
                 sh 'dotnet test' 
@@ -68,9 +59,43 @@ pipeline {
                 sh 'dotnet publish ${APP_NAME} -c Release -o ../publish' 
             }
         }
-		
-		stage('Deploy'){
-		     
+		stage('Run'){
+		  when{
+		     expression {params.CHOSEN_ACTION == 'RUN_APPLICATION'}
+		  }
+		  steps{
+		      sh '''
+				if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER_NAME})
+				then
+					docker container rm -f ${DOCKER_CONTAINER_NAME}
+				fi
+			    '''
+				
+			    sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP="${APP_NAME}" -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${DOCKER_IMAGE_FILE}'
+				sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
+		  }
+		}
+		stage('Publish to Docker Hub'){
+		  when{
+		     expression {params.CHOSEN_ACTION == 'PUBLISH_TO_DOCKER_HUB'}
+		  }
+		  steps{
+		     sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
+			 sh 'docker tag ${DOCKER_IMAGE_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+			 sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
+				
+				script{
+				  docker.withRegistry('https://www.docker.io/',"${DOCKER_HUB_CREDENTIALS_ID}"){
+				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+				  }
+				}
+		  }
+		}
+		stage('Run and Publish to Docker Hub'){
+		     when{
+		     expression {params.CHOSEN_ACTION == 'RUN_AND_PUBLISH_TO_DOCKER_HUB'}
+		    }
 		     steps{
 			    sh '''
 				if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER_NAME})
