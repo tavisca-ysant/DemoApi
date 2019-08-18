@@ -46,15 +46,18 @@ pipeline {
             }
         }
 	 stage('Sonarqube') {
-      steps {
-          withSonarQubeEnv('sonarqube') {
-            sh "${SONARQUBE_CREDENTIALS_ID}/bin/sonar-scanner"
+    environment {
+        scannerHome = tool 'SonarQube Scanner 4.0.0.1744'
+    }
+    steps {
+        withSonarQubeEnv('sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner"
         }
         timeout(time: 10, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true
         }
-      }
-  } 
+    }
+}
         stage('Test') {
             steps {
                 sh 'dotnet test' 
