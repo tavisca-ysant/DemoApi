@@ -67,7 +67,7 @@ pipeline {
 			    '''
 				script
 				{
-				dir(${APP_NAME}/${OutputDirectory}){
+				dir("${APP_NAME}/${OutputDirectory}"){
 			    sh 'docker build -t ${USERNAME}/${DOCKER_REPOSITORY}:latest --build-arg APPLICATION=${APP_NAME} .'
 				}
 				}
