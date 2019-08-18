@@ -68,7 +68,7 @@ pipeline {
 				script
 				{
 				dir("${APP_NAME}/${OutputDirectory}"){
-			    sh 'docker build -t ${USERNAME}/${DOCKER_REPOSITORY}:latest --build-arg APPLICATION=${APP_NAME} .'
+			    sh 'docker build -t ${USERNAME}/${DOCKER_REPOSITORY}:latest --build-arg APPLICATION=${APP_NAME} --build-arg PUBLISH=${OutputDirectory} .'
 				sh 'docker run --name ${DOCKER_CONTAINER_NAME}  -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
 				}
 				}
