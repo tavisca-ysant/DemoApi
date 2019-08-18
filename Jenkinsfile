@@ -22,9 +22,14 @@ pipeline {
 			       defaultValue: '65208')
 			string(name: 'APP_NAME',
 			       defaultValue: 'DemoApi')
+			string(name: 'DOCKER_HUB_CREDENTIALS_ID', defaultValue: 'docker-hub-credentials')
 		    
     }
-	
+	environment{
+
+	  OutputDirectory = "out"
+
+	}
     stages {
         stage('Build') {
             steps {
@@ -41,11 +46,18 @@ pipeline {
         }
 		stage('Publish') {
             steps {
-                sh 'dotnet publish -c Release -o ../publish' 
+                sh 'dotnet publish ${APP_NAME} -c Release -o ${OutputDirectory} --no-restore' 
             }
         }
-		stage('Deploy'){
 
+		stage('Setting up environment for docker'){
+		  steps{
+		     sh 'mv Dockerfile ${APP_NAME}/${OutputDirectory}'
+		  }
+		}
+		
+		stage('Deploy'){
+		     
 		     steps{
 			    sh '''
 				if(docker inspect -f {{.State.Running}} ${DOCKER_CONTAINER_NAME})
@@ -53,12 +65,18 @@ pipeline {
 					docker container rm -f ${DOCKER_CONTAINER_NAME}
 				fi
 			    '''
-			    sh 'docker build -t ${DOCKER_FILE} -f Dockerfile .'
-				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT}/tcp ${DOCKER_FILE}:latest'
-				sh 'docker tag ${DOCKER_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
-				sh 'docker login -u ${USERNAME} -p ${PASSWORD}'
-				sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:latest'
-				sh 'docker image rm -f ${DOCKER_FILE}:latest'
+				script
+				{
+				dir(${APP_NAME}/${OutputDirectory}){
+			    sh 'docker build -t ${USERNAME}/${DOCKER_REPOSITORY}:latest --build-arg APPLICATION=${APP_NAME} .'
+				}
+				}
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
+				script{
+				  docker.withRegistry('https://www.docker.io/',"${DOCKER_HUB_CREDENTIALS_ID}"){
+				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:latest'
+				  }
+				}
 			 }
 		}
 		
