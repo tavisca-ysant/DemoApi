@@ -27,10 +27,10 @@ pipeline {
 			       defaultValue: 'DemoApi',
 				   description: 'This is your project/application name')
 			string(name: 'DOCKER_HUB_CREDENTIALS_ID',
-			       defaultValue: 'docker-hub-credentials'
+			       defaultValue: 'docker-hub-credentials',
 				   description: 'This field is used to reference docker hub credentials')
 			string(name: 'TAG_NAME',
-			       defaultValue: 'latest'
+			       defaultValue: 'latest',
 				   description: 'This field is used to associate a tag to the docker image')
 		    
     }
