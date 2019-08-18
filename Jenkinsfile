@@ -10,15 +10,13 @@ pipeline {
 				   description: 'This will be the name of Docker image generated. This should be in lowercase')
 		    string(name: 'DOCKER_CONTAINER_NAME',
 			       defaultValue: 'demoapi-container',
-				   description: 'This is the named docker container. <Docker_image_name>-container or <Project_name>-container is the suggested naming
-				   convention for this parameter')
+				   description: 'This is the named docker container. <Docker_image_name>-container or <Project_name>-container is the suggested naming convention for this parameter')
 			string(name: 'USERNAME',
 			       defaultValue: 'yatharthsant',
 				   description: 'Enter your docker hub username here')
 			string(name: 'DOCKER_REPOSITORY',
 			       defaultValue: 'test-repo',
-				   description: 'This is the docker repository where docker image (artifact) will be posted. If the specified name does not exist, a 
-				   new repository with the specified name gets generated')
+				   description: 'This is the docker repository where docker image (artifact) will be posted. If the specified name does not exist, a new repository with the specified name gets generated')
 			string(name: 'APPLICATION_PORT',
 			       defaultValue: '65208',
 				   description: 'This is the port on which your application will listen')
