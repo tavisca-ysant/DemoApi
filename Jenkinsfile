@@ -56,7 +56,7 @@ pipeline {
 		     
 		     steps{
 			    sh '''
-				if(docker inspect -f {{.State.Running}} ${DOCKER_CONTAINER_NAME})
+				if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER_NAME})
 				then
 					docker container rm -f ${DOCKER_CONTAINER_NAME}
 				fi
