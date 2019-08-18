@@ -63,7 +63,7 @@ pipeline {
 			    '''
 				
 			    sh 'docker build -t ${DOCKER_FILE} --build-arg APPLICATION=${APP_NAME} .'
-				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${DOCKER_FILE}'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP = ${APP_NAME} -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${DOCKER_FILE}'
 				sh 'docker tag ${DOCKER_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:latest'
 				sh 'docker image rm -f ${DOCKER_FILE}:latest'
 				
@@ -72,7 +72,7 @@ pipeline {
 				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:latest'
 				  }
 				}
-				sh 'docker pull ${USERNAME}/${DOCKER_REPOSITORY}:latest'
+				
 				
 			 }
 		}
