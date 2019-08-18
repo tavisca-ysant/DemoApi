@@ -29,6 +29,9 @@ pipeline {
 			string(name: 'DOCKER_HUB_CREDENTIALS_ID',
 			       defaultValue: 'docker-hub-credentials',
 				   description: 'This field is used to reference docker hub credentials')
+			string(name: 'SONARQUBE_CREDENTIALS_ID',
+			       defaultValue: 'SonarScanner',
+				   description: 'This field is used to reference docker hub credentials')
 			string(name: 'TAG_NAME',
 			       defaultValue: 'latest',
 				   description: 'This field is used to associate a tag to the docker image')
@@ -43,12 +46,9 @@ pipeline {
             }
         }
 	 stage('Sonarqube') {
-      environment {
-        scannerHome = tool 'SonarScanner 4.0.0'
-      }
       steps {
           withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"
+            sh "${SONARQUBE_CREDENTIALS_ID}/bin/sonar-scanner"
         }
         timeout(time: 10, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true
