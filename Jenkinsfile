@@ -67,7 +67,7 @@ pipeline {
 			    sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
 				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP="${APP_NAME}" -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${DOCKER_IMAGE_FILE}'
 				sh 'docker tag ${DOCKER_IMAGE_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
-				sh 'docker image rm -f ${DOCKER_FILE}:${TAG_NAME}'
+				sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
 				
 				script{
 				  docker.withRegistry('https://www.docker.io/',"${DOCKER_HUB_CREDENTIALS_ID}"){
