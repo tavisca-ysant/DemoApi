@@ -4,4 +4,4 @@ WORKDIR app
 COPY ./DemoApi/publish ./
 ARG APPLICATION=Default
 ENV HOSTED_APP = ${APPLICATION}
-CMD dotnet {HOSTED_APP}.dll
+CMD dotnet ${HOSTED_APP}.dll
