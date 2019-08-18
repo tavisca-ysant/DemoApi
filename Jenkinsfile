@@ -42,19 +42,12 @@ pipeline {
 				
             }
         }
-		stage('Sonarqube') {
-    environment {
-        scannerHome = tool 'SonarQubeScanner'
-    }
-    steps {
-        withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"
+	 stage('SonarQube Analysis'){
+                def scannerHome = tool 'SonarScanner 4.0.0';
+                withSonarQubeEnv('webSonarApi') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
         }
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-    }
-}
         stage('Test') {
             steps {
                 sh 'dotnet test' 
