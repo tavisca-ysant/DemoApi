@@ -46,7 +46,7 @@ pipeline {
         }
 		stage('Publish') {
             steps {
-                sh 'dotnet publish ${APP_NAME} -c Release -o ${OutputDirectory}' 
+                sh 'dotnet publish ${APP_NAME} -c Release -o ../publish' 
             }
         }
 
