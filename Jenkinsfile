@@ -38,11 +38,8 @@ pipeline {
 			string(name: 'TAG_NAME',
 			       defaultValue: 'latest',
 				   description: 'This field is used to associate a tag to the docker image')
-			string(name: 'Sonarqube-MSBuild',
-			       defaultValue: 'C:\\Users\\ysant\\Downloads\\sonar-scanner-msbuild-4.6.2.2108-netcoreapp2.0',
-				   description: 'This field is used to associate a tag to the docker image')
 			string(name: 'SONAR_PROJECT_NAME',
-			       defaultValue: 'DemoApi.sln',
+			       defaultValue: 'demo-api',
 				   description: 'This field is used to associate a tag to the docker image')
 		    
     }
@@ -57,7 +54,7 @@ pipeline {
 	    stage('sonar') {
             steps{
                 bat """
-                        dotnet ${SonarMSBUILD}  begin /k:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
+                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
                         dotnet  build
                         dotnet ${SonarMSBUILD} end  /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
                     """
