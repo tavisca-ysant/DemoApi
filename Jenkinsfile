@@ -51,14 +51,19 @@ pipeline {
 				
             }
         }
-	    stage('SonarQube') {
-            steps {
-                sh 'echo SonarQube Started'
-                sh '${SonarMSBUILD} begin /key:"demo_api" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
-                sh 'dotnet build  ${APP_NAME}.sln'
-                sh '${SonarMSBUILD} end /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
-            }
+	    stage('Sonarqube') {
+    environment {
+        scannerHome = tool 'SonarQube Scanner'
+    }
+    steps {
+        withSonarQubeEnv(credentialsId: 'Sonar_credentials') {
+            sh "${scannerHome}/bin/sonar-scanner"
         }
+        timeout(time: 10, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
+    }
+}
         stage('Test') {
             steps {
                 sh 'dotnet test' 
