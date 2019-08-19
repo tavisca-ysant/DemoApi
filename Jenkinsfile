@@ -38,6 +38,9 @@ pipeline {
 			string(name: 'TAG_NAME',
 			       defaultValue: 'latest',
 				   description: 'This field is used to associate a tag to the docker image')
+			string(name: 'Sonarqube-MSBuild}',
+			       defaultValue: 'C:\Users\ysant\Downloads\sonar-scanner-msbuild-4.6.2.2108-netcoreapp2.0',
+				   description: 'This field is used to associate a tag to the docker image')
 		    
     }
     stages {
@@ -48,19 +51,14 @@ pipeline {
 				
             }
         }
-	    stage('SonarQube Scanner'){
-	   environment {
-        scannerHome = tool 'SonarQube Scanner 4.0.0.1744'
+	    stage('SonarQube') {
+            steps {
+                sh 'echo SonarQube Started'
+                sh 'dotnet ${Sonarqube-MSBuild} begin /k:"demo_api" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
+                sh 'dotnet build  ${SOLUTION_FILE_PATH}'
+                sh 'dotnet ${Sonarqube-MSBuild} end /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
+            }
         }
-    steps {
-        withSonarQubeEnv('SonarQube Scanner 4.0.0.1744') {
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-      }
-		}
         stage('Test') {
             steps {
                 sh 'dotnet test' 
