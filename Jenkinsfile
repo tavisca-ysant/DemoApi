@@ -53,7 +53,7 @@ pipeline {
         }
 	    stage('sonar') {
             steps{
-                bat """
+                sh """
                         dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
                         dotnet  build
                         dotnet ${SonarMSBUILD} end  /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
