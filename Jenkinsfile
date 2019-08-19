@@ -53,10 +53,10 @@ pipeline {
         }
 	    stage('SonarQube') {
             steps {
-                sh 'echo SonarQube Started'
-                sh 'dotnet ${SonarMSBUILD} begin /key:"demo_api" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
-                sh 'dotnet build  ${APP_NAME}.sln'
-                sh 'dotnet ${SonarMSBUILD} end /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
+                bat "echo SonarQube Started"
+                bat 'dotnet %env.SonarMSBUILD% begin /key:"demo_api" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
+                bat 'dotnet build  ${APP_NAME}.sln'
+                bat 'dotnet %env.SonarMSBUILD% end /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"'
             }
         }
         stage('Test') {
