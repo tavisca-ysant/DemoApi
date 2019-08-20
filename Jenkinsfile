@@ -26,14 +26,17 @@ pipeline {
 			       defaultValue: 'docker-hub-credentials',
 				   description: 'This field is used to reference docker hub credentials')
 			string(name: 'SONARQUBE_CREDENTIALS_ID',
-			       defaultValue: 'SonarScanner',
-				   description: 'This field is used to reference docker hub credentials')
+			       defaultValue: 'SonarQube_Secret_Key',
+				   description: 'This field is used to reference sonarqube secret key')
 			string(name: 'TAG_NAME',
 			       defaultValue: 'latest',
 				   description: 'This field is used to associate a tag to the docker image')
 			string(name: 'SONAR_PROJECT_NAME',
 			       defaultValue: 'demo-api',
 				   description: 'This field is the associated project name with sonarqube scanner')
+			string(name: 'SONARQUBE_HOST',
+			       defaultValue: 'http://localhost:9000',
+				   description: 'This field is the url for sonarqube server')
 		    
     }
     stages {
@@ -42,9 +45,9 @@ pipeline {
 				sh 'dotnet restore'
                 sh 'dotnet build -p:Configuration=release -v:n'
 				bat """
-                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
+                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="%SONARQUBE_HOST%" /d:sonar.login="${SONARQUBE_CREDENTIALS_ID}"
                         dotnet build
-						dotnet ${SonarMSBUILD} end  /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
+						dotnet ${SonarMSBUILD} end  /d:sonar.login="${SONARQUBE_CREDENTIALS_ID}"
                     """
             }
         }
@@ -56,11 +59,9 @@ pipeline {
 		stage('Publish') {
             steps {
                 sh 'dotnet publish ${APP_NAME} -c Release -o ../publish' 
-				
 				sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
 				sh 'docker tag ${DOCKER_IMAGE_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
 				sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
-				
 				script{
 				  docker.withRegistry('https://www.docker.io/',"${DOCKER_HUB_CREDENTIALS_ID}"){
 				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
