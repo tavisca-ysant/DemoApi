@@ -45,9 +45,9 @@ pipeline {
 				sh 'dotnet restore'
                 sh 'dotnet build -p:Configuration=release -v:n'
 				bat """
-                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="%SONARQUBE_HOST%" /d:sonar.login="${SONARQUBE_CREDENTIALS_ID}"
+                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="%SONARQUBE_HOST%" /d:sonar.login="%SONARQUBE_CREDENTIALS_ID%"
                         dotnet build
-						dotnet ${SonarMSBUILD} end  /d:sonar.login="${SONARQUBE_CREDENTIALS_ID}"
+						dotnet ${SonarMSBUILD} end  /d:sonar.login="%SONARQUBE_CREDENTIALS_ID%"
                     """
             }
         }
