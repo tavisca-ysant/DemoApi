@@ -46,9 +46,6 @@ pipeline {
                         dotnet build
 						dotnet ${SonarMSBUILD} end  /d:sonar.login="${SONARQUBE_CREDENTIALS_ID}"
                     """
-					withSonarQubeEnv(credentialsId: 'SonarQube_Secret_Key') {
-   
-				}
             }
         }
         stage('Test') {
