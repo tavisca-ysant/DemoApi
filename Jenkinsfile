@@ -1,13 +1,6 @@
 pipeline {
     agent any
-	
 	parameters {		
-			choice(
-                    choices: ['RUN_APPLICATION','PUBLISH_TO_DOCKER_HUB','RUN_AND_PUBLISH_TO_DOCKER_HUB'],
-                    name: 'CHOSEN_ACTION')
-			string(	name: 'GIT_SSH_PATH',
-					defaultValue: "https://github.com/tavisca-ysant/DemoApi.git",
-					description: '')
 			string(name: 'DOCKER_IMAGE_FILE',
 			       defaultValue: 'demoapi',
 				   description: 'This will be the name of Docker image generated. This should be in lowercase')
@@ -40,7 +33,7 @@ pipeline {
 				   description: 'This field is used to associate a tag to the docker image')
 			string(name: 'SONAR_PROJECT_NAME',
 			       defaultValue: 'demo-api',
-				   description: 'This field is used to associate a tag to the docker image')
+				   description: 'This field is the associated project name with sonarqube scanner')
 		    
     }
     stages {
@@ -48,17 +41,12 @@ pipeline {
             steps {
 				sh 'dotnet restore'
                 sh 'dotnet build -p:Configuration=release -v:n'
-				
-            }
-        }
-	    stage('sonar') {
-            steps{
-                bat """
+				bat """
                         dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
-                        dotnet  build
                         dotnet ${SonarMSBUILD} end  /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
                     """
-            }     
+				sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
+            }
         }
         stage('Test') {
             steps {
@@ -68,55 +56,6 @@ pipeline {
 		stage('Publish') {
             steps {
                 sh 'dotnet publish ${APP_NAME} -c Release -o ../publish' 
-            }
-        }
-		stage('Run'){
-		  when{
-		     expression {params.CHOSEN_ACTION == 'RUN_APPLICATION'}
-		  }
-		  steps{
-		      sh '''
-				if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER_NAME})
-				then
-					docker container rm -f ${DOCKER_CONTAINER_NAME}
-				fi
-			    '''
-				
-			    sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
-				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP="${APP_NAME}" -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${DOCKER_IMAGE_FILE}'
-				sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
-		  }
-		}
-		stage('Publish to Docker Hub'){
-		  when{
-		     expression {params.CHOSEN_ACTION == 'PUBLISH_TO_DOCKER_HUB'}
-		  }
-		  steps{
-		     sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
-			 sh 'docker tag ${DOCKER_IMAGE_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
-			 sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
-				
-				script{
-				  docker.withRegistry('https://www.docker.io/',"${DOCKER_HUB_CREDENTIALS_ID}"){
-				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
-				  }
-				}
-		  }
-		}
-		stage('Run and Publish to Docker Hub'){
-		     when{
-		     expression {params.CHOSEN_ACTION == 'RUN_AND_PUBLISH_TO_DOCKER_HUB'}
-		    }
-		     steps{
-			    sh '''
-				if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER_NAME})
-				then
-					docker container rm -f ${DOCKER_CONTAINER_NAME}
-				fi
-			    '''
-				
-			    sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
-				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP="${APP_NAME}" -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${DOCKER_IMAGE_FILE}'
 				sh 'docker tag ${DOCKER_IMAGE_FILE} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
 				sh 'docker image rm -f ${DOCKER_IMAGE_FILE}:${TAG_NAME}'
 				
@@ -125,6 +64,19 @@ pipeline {
 				    sh 'docker push ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
 				  }
 				}
+				sh 'docker image rm -f ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+            }
+        }
+		stage('Deploy'){
+		     steps{
+			    sh '''
+				if(docker inspect -f '{{.State.Running}}' ${DOCKER_CONTAINER_NAME})
+				then
+					docker container rm -f ${DOCKER_CONTAINER_NAME}
+				fi
+			    '''
+				sh 'docker pull ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
+				sh 'docker run --name ${DOCKER_CONTAINER_NAME} -e HOSTED_APP="${APP_NAME}" -d -p ${APPLICATION_PORT}:${DOCKER_CONTAINER_PORT} ${USERNAME}/${DOCKER_REPOSITORY}:${TAG_NAME}'
 			 }
 		}
 		
