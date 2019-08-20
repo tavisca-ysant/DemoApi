@@ -25,9 +25,6 @@ pipeline {
 			string(name: 'DOCKER_HUB_CREDENTIALS_ID',
 			       defaultValue: 'docker-hub-credentials',
 				   description: 'This field is used to reference docker hub credentials')
-			string(name: 'SONARQUBE_CREDENTIALS_ID',
-			       defaultValue: 'SonarQube_Secret_Key',
-				   description: 'This field is used to reference sonarqube secret key')
 			string(name: 'TAG_NAME',
 			       defaultValue: 'latest',
 				   description: 'This field is used to associate a tag to the docker image')
