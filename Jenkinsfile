@@ -41,16 +41,16 @@ pipeline {
             steps {
 				sh 'dotnet restore'
                 sh 'dotnet build -p:Configuration=release -v:n'
-				bat """
-                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
-                        dotnet ${SonarMSBUILD} end  /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
-                    """
 				sh 'docker build -t ${DOCKER_IMAGE_FILE} --build-arg APPLICATION=${APP_NAME} .'
             }
         }
         stage('Test') {
             steps {
                 sh 'dotnet test' 
+				bat """
+                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
+                        dotnet ${SonarMSBUILD} end  /d:sonar.login="2466c76e39f8acfb6d1e104ed2071997f33555d1"
+                    """
             }
         }
 		stage('Publish') {
