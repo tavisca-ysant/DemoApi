@@ -44,14 +44,14 @@ pipeline {
             steps {
 				sh 'dotnet restore'
                 sh 'dotnet build -p:Configuration=release -v:n'
-				
-					withSonarQubeEnv(credentialsId: "${SONARQUBE_CREDENTIALS_ID}") {
-						bat """
-                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="%SONARQUBE_HOST%"
+				bat """
+                        dotnet ${SonarMSBUILD}  begin /key:"%SONAR_PROJECT_NAME%" /d:sonar.host.url="%SONARQUBE_HOST%" /d:sonar.login="${SONARQUBE_CREDENTIALS_ID}"
                         dotnet build
-						dotnet ${SonarMSBUILD} end
-                        """
-					}
+						dotnet ${SonarMSBUILD} end  /d:sonar.login="${SONARQUBE_CREDENTIALS_ID}"
+                    """
+					withSonarQubeEnv(credentialsId: 'SonarQube_Secret_Key') {
+   
+				}
             }
         }
         stage('Test') {
