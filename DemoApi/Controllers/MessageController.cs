@@ -19,7 +19,6 @@ namespace DemoApi.Controllers
                 "value2"
             };
         }
-
         [HttpGet("{message}")]
         public ActionResult<string> Get(string message)
         {
